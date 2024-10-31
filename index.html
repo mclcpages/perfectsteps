@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,9 +12,6 @@
   <div class="container my-5">
     <h1 class="text-center mb-4">Match the Pattern Game</h1>
     <div class="row" id="buttonContainer"></div>
-    <div class="text-center mt-4">
-      <button id="checkPattern" class="btn btn-primary">Check Pattern</button>
-    </div>
   </div>
 
   <!-- Modal -->
@@ -30,19 +28,19 @@
   </div>
 
   <!-- Buzzer Sound -->
-  <audio id="buzzer" src="https://www.soundjay.com/button/beep-10.wav"></audio>
+  <audio id="buzzer" src="https://assets.mixkit.co/active_storage/sfx/954/954-preview.mp3"></audio>
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  
+
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const pattern = urlParams.get('pattern') ? urlParams.get('pattern').split(',') : ['L', 'R', 'L', 'R', 'L'];
-    let userSelection = [];
+    let userSelection = new Array(pattern.length).fill(null);
 
     $(document).ready(function() {
       // Generate buttons
-      for (let i = 1; i <= 5; i++) {
+      for (let i = 0; i < pattern.length; i++) {
         $('#buttonContainer').append(`
           <div class="col-6 text-center mb-3">
             <button class="btn btn-outline-primary left-btn" data-choice="L" data-index="${i}">Left</button>
@@ -57,21 +55,24 @@
       $('.left-btn, .right-btn').click(function() {
         const choice = $(this).data('choice');
         const index = $(this).data('index');
-        userSelection[index - 1] = choice;
-        $(this).addClass('active').siblings().removeClass('active');
-      });
 
-      // Check pattern on button click
-      $('#checkPattern').click(function() {
-        if (JSON.stringify(userSelection) === JSON.stringify(pattern)) {
-          $('#modalBody').text('You win!');
-        } else {
+        // Prevent further clicks for the current row
+        $(this).siblings('button').prop('disabled', true);
+        userSelection[index] = choice;
+
+        // Check the pattern after each selection
+        if (userSelection[index] !== pattern[index]) {
           $('#modalBody').text('Failed!');
           $('#buzzer')[0].play();
+          $('#resultModal').modal('show');
+          $('.left-btn, .right-btn').prop('disabled', true); // Disable all buttons
+        } else if (userSelection.join('') === pattern.join('')) {
+          $('#modalBody').text('You win!');
+          $('#resultModal').modal('show');
         }
-        $('#resultModal').modal('show');
       });
     });
   </script>
 </body>
 </html>
+
