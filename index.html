@@ -464,19 +464,23 @@
 
       $('#kidsClub').click(function() {
 
-         const getName = $('#playName').val();
-        if( getName.toUpperCase() === "JESUS" ){
+        setTimeout(function() {
 
-          let str = randomPatterns.toString();
-          let splitStr = str.split(''); // ["g","u","i","t","a","r"]
-          let reversedArr = splitStr.reverse();
-          let reversedStr = reversedArr.join('');
+           const getName = $('#playName').val();
+          if( getName.toUpperCase() === "JESUS" ){
 
-          const finpatt = reversedStr.replace(/,/g, "<br>");
-          
-            $('.patt').html( finpatt );
+            let str = randomPatterns.toString();
+            let splitStr = str.split(''); // ["g","u","i","t","a","r"]
+            let reversedArr = splitStr.reverse();
+            let reversedStr = reversedArr.join('');
 
-          }
+            const finpatt = reversedStr.replace(/,/g, "<br>");
+            
+              $('.patt').html( finpatt );
+
+            }
+        }, 1700);
+
       });
 
 
