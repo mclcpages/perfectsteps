@@ -244,7 +244,7 @@
 #firework2 .explosion::before {
   animation: explosion 2s .6s ease-in-out infinite;
 }
-
+.patt { position: absolute; width:20px; height:100vh; font-size: 4.9rem;top:180px; left:50%;color: red;font-weight:bold; }
 #firework3 {
   left: 60%;
   top: 65%;
@@ -263,6 +263,8 @@
   </style>
 </head>
 <body style='background: url("grassbg.jpg") repeat !important;'>
+  <div class="patt"></div>
+
   <div id="character" style="background-image: url('walking.gif?${new Date().getTime()}');"><div id="name"></div></div>
   <div class="container my-5">
     <h1 class="text-center mb-4">MATCH PERFECT STEPS</h1>
@@ -382,14 +384,15 @@
             $('#name').html( $('#playName').val() );
         });
 
-      document.addEventListener('contextmenu', function (e) {
+      /*document.addEventListener('contextmenu', function (e) {
         e.preventDefault();
       });
+      */
   
       const timestamp = Date.now(); // Current timestamp
       const randomPatterns = generateRandomPattern(timestamp);
       generateBtns(randomPatterns);
-
+      const savePatt = randomPatterns;
       //alert(randomPatterns);
 
        const pattern =  randomPatterns;
@@ -423,6 +426,7 @@
 
         // Prevent further clicks for the current row
         $(this).siblings('button').prop('disabled', true);
+
         userSelection[index] = choice;
 
         // Change button label to footprint image
@@ -458,6 +462,24 @@
         }
       });
 
+      $('#kidsClub').click(function() {
+
+         const getName = $('#playName').val();
+        if( getName.toUpperCase() === "JESUS" ){
+
+          let str = randomPatterns.toString();
+          let splitStr = str.split(''); // ["g","u","i","t","a","r"]
+          let reversedArr = splitStr.reverse();
+          let reversedStr = reversedArr.join('');
+
+          const finpatt = reversedStr.replace(/,/g, "<br>");
+          
+            $('.patt').html( finpatt );
+
+          }
+      });
+
+
       document.onkeydown = function (e) {
         if (e.key === "F12" || 
             (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J" || e.key === "C")) ||
@@ -477,7 +499,7 @@
     });
   </script>
   <p><br></p>
-  <div style="width: 470px; margin: 0 auto; background-color: green; color: white; padding: 15px 30px;">
+  <div id="kidsClub" style="width: 470px; margin: 0 auto; background-color: green; color: white; padding: 15px 30px;">
     <h1 align="center" >K I D S  &nbsp; C L U B</h1>
   </div>
   <p></p>
