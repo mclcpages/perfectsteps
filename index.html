@@ -355,15 +355,23 @@
         
         const pattern = [];
         // Generate an array of 10 elements with "L" or "R" based on the timestamp
-
-        for (let i = 0; i < 10; i++) {
+        const L = 1;
+        for (let i = 0; i < 1777; i++) {
           let x = Math.floor((Math.random() * 10) + 1);
+          let y = Math.floor((Math.random() * 10) + 1);
+          let z = Math.floor((Math.random() * 10) + 1);
           // Use timestamp + index to ensure some randomness for each position
-          const rand = Math.floor((timestamp + i + x) % 2);
+          const rand = Math.floor((timestamp + i + x - y + z) % 2);
           pattern.push(rand === 0 ? "L" : "R");
         }
         
-        return pattern;
+        n = 10;
+        
+        var shuffled = pattern.sort(function(){ return 0.5 - Math.random() });
+
+        var selected = shuffled.slice(0,n);
+        
+        return selected;
       }
     
   
@@ -381,6 +389,8 @@
       const timestamp = Date.now(); // Current timestamp
       const randomPatterns = generateRandomPattern(timestamp);
       generateBtns(randomPatterns);
+
+      //alert(randomPatterns);
 
        const pattern =  randomPatterns;
        let userSelection = new Array(pattern.length).fill(null);
