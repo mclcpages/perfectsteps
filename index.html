@@ -7,6 +7,15 @@
   <link href="bootstrap.min.css" rel="stylesheet">
   <script src="jquery-3.6.0.min.js"></script>
   <style>
+    @keyframes reloadBackground {
+  from {
+    background-image: url('walking.gif?${new Date().getTime()}');
+  }
+  to {
+    background-image: url('walking.gif?${new Date().getTime()}');
+  }
+}
+
     .btn-square {
       width: 140px;
       height: 100px;
@@ -75,6 +84,12 @@
         background-image: url('walking.gif');
         transition: all 1s;
         text-align: center;
+        background-attachment: scroll; 
+        animation: reloadBackground 700s;
+        animation-iteration-count: 1;
+        animation-delay: 0s;
+        background-size: cover;
+        background-position: center;
     }
     #name {
       font-weight: bold;
@@ -248,7 +263,7 @@
   </style>
 </head>
 <body style='background: url("grassbg.jpg") repeat !important;'>
-  <div id="character"><div id="name"></div></div>
+  <div id="character" style="background-image: url('walking.gif?${new Date().getTime()}');"><div id="name"></div></div>
   <div class="container my-5">
     <h1 class="text-center mb-4">MATCH PERFECT STEPS</h1>
     <p align="center"><input type="text" class="form-control" id="playName" placeholder="Enter Name Here" style="width:270px; font-size: 2em;text-align: center;"></p>
@@ -350,10 +365,8 @@
         
         return pattern;
       }
-      
-
-// Usage
-
+    
+  
 
     $(document).ready(function() {
 
@@ -361,10 +374,10 @@
             $('#name').html( $('#playName').val() );
         });
 
-      document.addEventListener('contextmenu', function (e) {
+     /* document.addEventListener('contextmenu', function (e) {
         e.preventDefault();
       });
-
+  */
       const timestamp = Date.now(); // Current timestamp
       const randomPatterns = generateRandomPattern(timestamp);
       generateBtns(randomPatterns);
@@ -415,7 +428,7 @@
 
             setTimeout(function() {
               location.reload();
-            }, 3700);
+            }, 3500);
             //$('.btn-left, .btn-right').prop('disabled', true); // Disable all buttons
           }, 700);
         } else {
