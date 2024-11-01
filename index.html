@@ -317,7 +317,7 @@
   </div>
 
   <!-- Sound Effects -->
-  <audio id="bg_music" src="bgmusic.mp3"></audio>
+  <audio id="bgmusic" src="bgmusic.mp3"></audio>
   <audio id="buzzer" src="buzzer.mp3"></audio>
   <audio id="clap" src="clap.mp3"></audio>
   <audio id="celebrate" src="celebrate.mp3"></audio>
@@ -356,7 +356,7 @@
 
 
     $(document).ready(function() {
-
+      $('#bgmusic')[0].play();
       
       $('#playName').change(function(){
             $('#name').html( $('#playName').val() );
@@ -386,7 +386,7 @@
           }
       }
 
-      $('#bg_music')[0].play();
+      
 
       $(document).click(function(event) {
             $("#character").css({left: event.pageX - 57, top: event.pageY - 75});
@@ -408,7 +408,7 @@
         // Check if the choice matches the pattern for this step
         if (userSelection[index] !== pattern[index]) {
           setTimeout(function() {
-            $('#bg_music')[0].pause();
+            $('#bgmusic')[0].pause();
             $('#modalBody').text('FAILED!');
             $('#buzzer')[0].play();
             $('#resultModal').modal('show');
@@ -427,7 +427,7 @@
 
           // Check if the user completed the pattern successfully
           if (userSelection.join('') === pattern.join('')) {
-            $('#bg_music')[0].pause();
+            $('#bgmusic')[0].pause();
             $('#celebrate')[0].play();
 
             $('#winModal').modal('show'); // Show PERFECT! fireworks modal
