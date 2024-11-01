@@ -3,15 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pattern Matching Game</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <title>MATCH PERFECT STEPS</title>
+  <link href="bootstrap.min.css" rel="stylesheet">
+  <script src="jquery-3.6.0.min.js"></script>
   <style>
     .btn-square {
-      width: 100px;
+      width: 140px;
       height: 100px;
       font-size: 24px;
       font-weight: bold;
+      position: relative;
     }
     .btn-left {
       background-color: blue;
@@ -21,58 +22,379 @@
       background-color: orange;
       color: white;
     }
+    .btn-square:hover::before {
+      content: url('footprint_hover2.png');
+      position: absolute;
+      top: 30%;
+      left: 33%;
+      transform: translate(-50%, -50%);
+      width: 40px !important;
+      height: 40px !important;
+      z-index: 999;
+    }
+    .btn-square:hover {
+      background-color: black;
+    }
+    .step-number {
+      font-size: 24px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100px;
+      width: 100px;
+    }
     .footprint {
       width: 40px;
       height: 40px;
     }
+    .failed-modal .modal-dialog {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .failed-modal .modal-content {
+      background: transparent;
+      border: none;
+      color: red;
+      font-size: 11rem;
+      font-weight: bold;
+      text-align: center;
+      animation: zoomEffect 1s infinite;
+    }
+    @keyframes zoomEffect {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+    #character {
+        z-index: 99999 !important;
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        background-image: url('walking.gif');
+        transition: all 1s;
+        text-align: center;
+    }
+    #name {
+      font-weight: bold;
+      margin-top: 17px !important;
+      font-size: 1.2rem;
+      width: 130px;
+      height: 30px;
+      background: red;
+      position: relative;
+      -moz-border-radius: 10px;
+      -webkit-border-radius: 10px;
+      border-radius: 10px;
+      margin-left: 115px !important;
+      color: white;
+    }
+    #name:before {
+      content: "";
+      position: absolute;
+      right: 100%;
+      top: 10px;
+      width: 0;
+      height: 0;
+      border-top: 5px solid transparent;
+      border-right: 10px solid red;
+      border-bottom: 5px solid transparent;
+    }
+
+    #name2 {
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: -20px !important;
+      margin-left: 25px !important;
+      position: absolute;
+      text-transform: uppercase;
+      background-color: red;
+      padding: 5px 15px;
+    }
+
+    /* Fireworks for PERFECT! Modal */
+    .fireworks-modal .modal-dialog {
+      margin-left: 20%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .fireworks-modal .modal-content {
+      background: transparent;
+      border: none;
+      text-align: center;
+      color: #ffcc00;
+      font-size: 11rem;
+      font-weight: bold;
+      position: relative;
+      animation: zoomEffect 0.8s infinite;
+    }
+    /*
+    .firework {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #ffcc00;
+      border-radius: 50%;
+      animation: fireworkEffect 0.8s linear infinite;
+      opacity: 0;
+    }
+    */
+
+    .firework {
+  position: absolute;
+}
+.explosion {
+  position: absolute;
+  left: -2px;
+  bottom: 0;
+  width: 24px;
+  height: 280px;
+  transform-origin: 50% 100%;
+  /* background-color: rgba(0,0,0,.2); */
+  overflow: hidden;
+}
+.explosion:nth-child(1) {
+  transform: rotate(0deg) translateY(-15px);
+}
+.explosion:nth-child(2) {
+  transform: rotate(30deg) translateY(-15px);
+}
+.explosion:nth-child(3) {
+  transform: rotate(60deg) translateY(-15px);
+}
+.explosion:nth-child(4) {
+  transform: rotate(90deg) translateY(-15px);
+}
+.explosion:nth-child(5) {
+  transform: rotate(120deg) translateY(-15px);
+}
+.explosion:nth-child(6) {
+  transform: rotate(150deg) translateY(-15px);
+}
+.explosion:nth-child(7) {
+  transform: rotate(180deg) translateY(-15px);
+}
+.explosion:nth-child(8) {
+  transform: rotate(210deg) translateY(-15px);
+}
+.explosion:nth-child(9) {
+  transform: rotate(240deg) translateY(-15px);
+}
+.explosion:nth-child(10) {
+  transform: rotate(270deg) translateY(-15px);
+}
+.explosion:nth-child(11) {
+  transform: rotate(300deg) translateY(-15px);
+}
+.explosion:nth-child(12) {
+  transform: rotate(330deg) translateY(-15px);
+}
+
+.explosion::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 40px;
+  background-color: #f5cf52;
+}
+@keyframes explosion {
+  0% {
+    top: 100%;
+  }
+  33%, 100% {
+    top: -50%;
+  }
+}
+
+#firework1 {
+  left: 50%;
+  top: 50%;
+  transform: scale(1);
+}
+#firework1 .explosion::before {
+  animation: explosion 2s ease-in-out infinite;
+}
+
+#firework2 {
+  left: 40%;
+  top: 45%;
+  transform: scale(.7);
+}
+#firework2 .explosion::before {
+  animation: explosion 2s .6s ease-in-out infinite;
+}
+
+#firework3 {
+  left: 60%;
+  top: 65%;
+  transform: scale(.4);
+}
+#firework3 .explosion::before {
+  animation: explosion 2s .4s ease-in-out infinite;
+}
+
+    @keyframes fireworkEffect {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(2.5); opacity: 0.7; }
+      100% { transform: scale(1); opacity: 0; }
+    }
+
   </style>
 </head>
-<body>
+<body style='background: url("grassbg.jpg") repeat !important;'>
+  <div id="character"><div id="name"></div></div>
   <div class="container my-5">
-    <h1 class="text-center mb-4">Match the Pattern Game</h1>
-    <div class="row justify-content-center" id="buttonContainer"></div>
+    <h1 class="text-center mb-4">MATCH PERFECT STEPS</h1>
+    <p align="center"><input type="text" class="form-control" id="playName" placeholder="Enter Name Here" style="width:270px; font-size: 2em;text-align: center;"></p>
+    <div class="row justify-content-center" id="buttonContainer" style="width: 550px; margin: 0 auto;"></div>
   </div>
 
-  <!-- Modal -->
-  <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+  <!-- Failed Modal -->
+  <div class="modal fade failed-modal" id="resultModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="resultModalLabel">Result</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" id="modalBody"></div>
+        <div id="modalBody">FAILED!</div>
       </div>
     </div>
   </div>
 
-  <!-- Buzzer Sound -->
-  <audio id="buzzer" src="https://assets.mixkit.co/active_storage/sfx/954/954-preview.mp3"></audio>
+  <!-- PERFECT! Modal with Fireworks -->
+  <div class="modal fade fireworks-modal" id="winModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div>PERFECT!</div>
+        <!-- Fireworks animations -->
+        <div class="firework" id="firework1">
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+</div>
+<div class="firework" id="firework2">
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+</div>
+<div class="firework" id="firework3">
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+  <div class="explosion"></div>
+</div>
+      </div>
+    </div>
+  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Sound Effects -->
+  <audio id="bg_music" src="mariogame.mp3"></audio>
+  <audio id="buzzer" src="buzzer.mp3"></audio>
+  <audio id="clap" src="clap.mp3"></audio>
+  <audio id="celebrate" src="celebrate.mp3"></audio>
+  
+
+  <script src="popper.min.js"></script>
+  <script src="bootstrap.bundle.min.js"></script>
 
   <script>
     const urlParams = new URLSearchParams(window.location.search);
-    const pattern = urlParams.get('pattern') ? urlParams.get('pattern').split(',') : ['L', 'R', 'L', 'R', 'L'];
-    let userSelection = new Array(pattern.length).fill(null);
-    const footprintImg = '<img src="https://upload.wikimedia.org/wikipedia/commons/7/70/Footprint.png" class="footprint" alt="footprint">';
+    const pattern = urlParams.get('pattern') ? urlParams.get('pattern').split(',') : ['L', 'R', 'L', 'R', 'L','L', 'R', 'L', 'R', 'L'];
+    
+    const footprintImg = '<img src="footprint.png" class="footprint" alt="footprint">';
+
+     //const playername =  urlParams.get('name') ?  urlParams.get('name') : '';
+     //if(playername)  $('#name').html(playername);
+
+     
+     function generateRandomPattern(timestamp) {
+        
+        const pattern = [];
+        // Generate an array of 10 elements with "L" or "R" based on the timestamp
+
+        for (let i = 0; i < 10; i++) {
+          let x = Math.floor((Math.random() * 10) + 1);
+          // Use timestamp + index to ensure some randomness for each position
+          const rand = Math.floor((timestamp + i + x) % 2);
+          pattern.push(rand === 0 ? "L" : "R");
+        }
+        
+        return pattern;
+      }
+      
+
+// Usage
+
 
     $(document).ready(function() {
-      // Generate buttons
-      for (let i = 0; i < pattern.length; i++) {
-        $('#buttonContainer').append(`
-          <div class="col-auto text-center mb-3">
-            <button class="btn btn-square btn-left" data-choice="L" data-index="${i}">L</button>
-          </div>
-          <div class="col-auto text-center mb-3">
-            <button class="btn btn-square btn-right" data-choice="R" data-index="${i}">R</button>
-          </div>
-        `);
+
+      
+      $('#playName').change(function(){
+            $('#name').html( $('#playName').val() );
+        });
+
+      document.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+      });
+
+      const timestamp = Date.now(); // Current timestamp
+      const randomPatterns = generateRandomPattern(timestamp);
+      generateBtns(randomPatterns);
+
+       const pattern =  randomPatterns;
+       let userSelection = new Array(pattern.length).fill(null);
+      function generateBtns(randomPatterns) {
+        for (let i = randomPatterns.length - 1; i >= 0; i--) {
+            $('#buttonContainer').append(`
+              <div class="col-4 text-center mb-3">
+                <button class="btn btn-square btn-left" data-choice="L" data-index="${i}">LEFT</button>
+              </div>
+              <div class="col-4 text-center mb-3 step-number">${i + 1}</div>
+              <div class="col-4 text-center mb-3">
+                <button class="btn btn-square btn-right" data-choice="R" data-index="${i}">RIGHT</button>
+              </div>
+            `);
+          }
       }
+
+      $('#bg_music')[0].play();
+
+      $(document).click(function(event) {
+            $("#character").css({left: event.pageX - 57, top: event.pageY - 75});
+        });
 
       // Button click handler
       $('.btn-left, .btn-right').click(function() {
+
         const choice = $(this).data('choice');
         const index = $(this).data('index');
 
@@ -83,19 +405,59 @@
         // Change button label to footprint image
         $(this).html(footprintImg);
 
-        // Check the pattern after each selection
+        // Check if the choice matches the pattern for this step
         if (userSelection[index] !== pattern[index]) {
-          $('#modalBody').text('Failed!');
-          $('#buzzer')[0].play();
-          $('#resultModal').modal('show');
-          $('.btn-left, .btn-right').prop('disabled', true); // Disable all buttons
-        } else if (userSelection.join('') === pattern.join('')) {
-          $('#modalBody').text('You win!');
-          $('#resultModal').modal('show');
+          setTimeout(function() {
+            $('#bg_music')[0].pause();
+            $('#modalBody').text('FAILED!');
+            $('#buzzer')[0].play();
+            $('#resultModal').modal('show');
+
+            setTimeout(function() {
+              location.reload();
+            }, 3700);
+            //$('.btn-left, .btn-right').prop('disabled', true); // Disable all buttons
+          }, 700);
+        } else {
+
+          // Play clap sound for correct choice
+          setTimeout(function() {
+            $('#clap')[0].play();
+          }, 300);
+
+          // Check if the user completed the pattern successfully
+          if (userSelection.join('') === pattern.join('')) {
+            $('#bg_music')[0].pause();
+            $('#celebrate')[0].play();
+
+            $('#winModal').modal('show'); // Show PERFECT! fireworks modal
+          }
         }
       });
+
+      document.onkeydown = function (e) {
+        if (e.key === "F12" || 
+            (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J" || e.key === "C")) ||
+            (e.ctrlKey && e.key === "U")) {
+          return false;
+        }
+      };
+
+      (function() {
+          const dools = /./;
+          dools.toString = function() {
+            window.location.reload();
+          };
+        })();
+
+
     });
   </script>
+  <p><br></p>
+  <div style="width: 470px; margin: 0 auto; background-color: green; color: white; padding: 15px 30px;">
+    <h1 align="center" >K I D S  &nbsp; C L U B</h1>
+  </div>
+  <p></p>
+  <p><br></p>
 </body>
 </html>
-
